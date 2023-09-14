@@ -241,10 +241,18 @@ public class Abilities {
 		int[] attributes = { attack, defence, strength, stamina, speed, agility, dribble, shortPass, longPass, shot,
 				jump, technique };
 		double rating = 0;
+		double totalWeight = 0;
+		double[] adjustedWeights = new double[weights.length];
 		for (int i = 0; i < weights.length; i++) {
-			rating += attributes[i] * weights[i];
-		}
-		rating /= weights.length;
+	        totalWeight += weights[i];
+	    }
+		for (int i = 0; i < adjustedWeights.length; i++) {
+            adjustedWeights[i] = weights[i] * 100.0 / totalWeight;
+        }
+		for (int i = 0; i < adjustedWeights.length; i++) {
+	        rating += attributes[i] * adjustedWeights[i];
+	    }
+		rating /= 100;
 		return (int) rating;
 	}
 
