@@ -1,6 +1,8 @@
 package com.bolbon.entities;
 
 import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 
@@ -38,13 +40,11 @@ public class Team {
 		this.idTeam = idTeam;
 		this.name = name;
 		this.players = players;
-		setRating(calcularRating());
 	}
 	public Team(int idTeam, String name) {
 		super();
 		this.idTeam = idTeam;
 		this.name = name;
-		setRating(calcularRating());
 	}
 	
 	public Team(String name) {
@@ -75,9 +75,29 @@ public class Team {
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
-	
-	public int calcularRating() {
-		return 10;
+	//para caluclar el rating de todos lso equipos, hay que hacer una federacion con lista de equipos
+	public void calcularRating() {
+		double rating11 = 0;
+		double ratingLeft = 0;
+		double ratingFinal=0;
+		List<Player> playerList = new ArrayList<>(players);
+		// Ordena la lista en orden descendente según el rating
+	    playerList.sort((player1, player2) -> Integer.compare(player2.getRating(), player1.getRating()));
+	    
+	    for (int i = 0; i < playerList.size(); i++) {
+	    	Player player = playerList.get(i);
+	    	if (i<11) {
+	    		rating11 += player.getRating(); 
+	    	} else {
+	    		ratingLeft += player.getRating(); 
+	    	}
+		}
+	    rating11 /= 12;	//max=90,75
+	    ratingLeft /= (players.size()-11)*10; //max=9,9
+	    ratingFinal=rating11+ratingLeft; //max=100,74
+	    ratingFinal*=100; //esto lo aumenta a por ejemplo, 9825 que es practicamente imposible
+	    ratingFinal= Math.max(1000, ratingFinal);	//el mínimo es 1000
+	    rating = (int) Math.min(10000, ratingFinal);//se redondea a 100 si es mayor
 	}
 	@Override
 	public String toString() {

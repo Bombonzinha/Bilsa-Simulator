@@ -116,8 +116,8 @@ public class Player {
 
 
 	/*aca hacer un calculador de ratings segun posicion, basandose en sus habilidades*/
-	public int calcularRating() {
-		return abilities.ratingFinal(position);
+	public void calcularRating() {
+		rating= abilities.ratingFinal(position);
 	}
 
 	@Override

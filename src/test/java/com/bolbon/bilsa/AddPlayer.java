@@ -16,6 +16,7 @@ import com.bolbon.entities.Team;
 import com.bolbon.repositories.IAbilitiesRepository;
 import com.bolbon.repositories.IPlayerRepository;
 import com.bolbon.repositories.ITeamRepository;
+import com.bolbon.utils.AbilitiesGenerator;
 import com.bolbon.utils.PlayerLoad;
 import com.bolbon.utils.RandomWordPicker;
 
@@ -35,7 +36,16 @@ public class AddPlayer {
 	public void testAddPlayer() {
 		/*attack, defence, strength, stamina, speed, agility, dribble, shortPass, longPass, shot,
 				jump, technique*/
-		teamsGenerator(20);
+//		teamsGenerator(20);
+//		String resultados = "";
+//		for (int i = 0; i< 10;i++) {
+//			long a = random.nextLong(1, 20);
+//			long b = random.nextLong(1, 20);
+//			Team home = teamRepository.findByIdTeamWithPlayers(a);
+//			Team away = teamRepository.findByIdTeamWithPlayers(b);
+//			resultados += Match.simulationSimple(home, away) + "\n";
+//		}
+//		System.out.println(resultados);
 
 	}
 	
@@ -44,16 +54,16 @@ public class AddPlayer {
 		tea.getPlayers().add(pla);
 		pla.setTeam(tea);
 		abi.setPlayer(pla);
-		System.out.println(tea);
+		pla.calcularRating();
 		teamRepository.save(tea);
 		playerRepository.save(pla);
 		abilitiesRepository.save(abi);
-		System.out.println(tea);
 		return true;
 	}
 	
 	public void playerMaker80(String name, int age, int pos, Team team) {
-		Abilities abilities = new Abilities(80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80);
+//		Abilities abilities = new Abilities(80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80);
+		Abilities abilities = AbilitiesGenerator.generateAbilitiesForPosition(pos);
 		Player player = new Player(name, age, pos);
 		playerRepository.save(player);
 		abilitiesRepository.save(abilities);
@@ -62,11 +72,13 @@ public class AddPlayer {
 	
 	public void teamMaker(String name) {
 		Team team = new Team(name);
-		teamRepository.save(team);
+		//teamRepository.save(team);
 		
 		for (int i =0;i<26;i++) {
 			playerMaker80(nombre(), random.nextInt(16, 40), random.nextInt(11), team);
 		}
+		team.calcularRating();
+		teamRepository.save(team);
 	}
 	
 	public void teamsGenerator(int quant) {

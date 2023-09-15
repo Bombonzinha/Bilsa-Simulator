@@ -161,12 +161,9 @@ public class AbilitiesGenerator {
     public static void main(String[] args) {
         int position = 1; // Cambia la posición según sea necesario
         Abilities generatedAbilities = generateAbilitiesForPosition(position);
-        Abilities hab = new Abilities(0, 90, 90, 90, 90, 90, 90, 90, 12, 12, 13, 11);
         
         System.out.println("Abilities generated for position " + position + ":");
         System.out.println(generatedAbilities);
         System.out.println(generatedAbilities.ratingFinal(position));
-        System.out.println(hab);
-        System.out.println(hab.ratingFinal(position));
     }
 }
