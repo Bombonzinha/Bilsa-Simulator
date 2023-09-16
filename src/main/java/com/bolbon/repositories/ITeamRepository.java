@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.bolbon.entities.Team;
 
 @Repository("teamRepository")
-public interface ITeamRepository extends JpaRepository<Team, Integer>{
+public interface ITeamRepository extends JpaRepository<Team, Serializable>{
 	public Team findByIdTeam(int idTeam);
 	
 	@Query("SELECT t FROM Team t LEFT JOIN FETCH t.players WHERE t.idTeam = :teamId")

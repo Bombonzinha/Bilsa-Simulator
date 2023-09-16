@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.bolbon.entities.Player;
 
 @Repository("playerRepository")
-public interface IPlayerRepository extends JpaRepository<Player, Integer> {
+public interface IPlayerRepository extends JpaRepository<Player, Serializable> {
 	public Player findByIdPlayer(int idPlayer);
 
 	@Query("SELECT p FROM Player p")

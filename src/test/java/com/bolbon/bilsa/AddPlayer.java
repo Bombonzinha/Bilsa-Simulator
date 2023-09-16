@@ -10,10 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
-import com.bolbon.entities.Abilities;
-import com.bolbon.entities.Player;
-import com.bolbon.entities.Team;
+import com.bolbon.entities.*;
 import com.bolbon.repositories.IAbilitiesRepository;
+import com.bolbon.repositories.IDivisionRepository;
+import com.bolbon.repositories.IFederationRepository;
 import com.bolbon.repositories.IPlayerRepository;
 import com.bolbon.repositories.ITeamRepository;
 import com.bolbon.utils.AbilitiesGenerator;
@@ -31,11 +31,20 @@ public class AddPlayer {
 	private ITeamRepository teamRepository;
 	@Autowired
 	private IAbilitiesRepository abilitiesRepository;
+	@Autowired
+	private IFederationRepository federationRepository;
+	@Autowired
+	private IDivisionRepository divisionRepository;
+	
 	private static Random random = new Random();
 	@Test
 	public void testAddPlayer() {
-		/*attack, defence, strength, stamina, speed, agility, dribble, shortPass, longPass, shot,
-				jump, technique*/
+		Federation federation = new Federation("Bilsa Football League");
+		Division leagueOne = new Division("League One", federation);
+		federationRepository.save(federation);
+		divisionRepository.save(leagueOne);
+		teamsGenerator(20, leagueOne);
+//		teamsGenerator(20, divisionRepository.findByIdDivision(1));
 //		teamsGenerator(20);
 //		String resultados = "";
 //		for (int i = 0; i< 10;i++) {
@@ -80,10 +89,25 @@ public class AddPlayer {
 		team.calcularRating();
 		teamRepository.save(team);
 	}
+	public void teamMaker(String name,Federation federation, Division division) {
+		Team team = new Team(name, federation, division);
+		//teamRepository.save(team);
+		
+		for (int i =0;i<26;i++) {
+			playerMaker80(nombre(), random.nextInt(16, 40), random.nextInt(11), team);
+		}
+		team.calcularRating();
+		teamRepository.save(team);
+	}
 	
 	public void teamsGenerator(int quant) {
 		for (int i = 0; i < quant; i++) {
 			teamMaker(nombre());
+		}
+	}
+	public void teamsGenerator(int quant, Division division) {
+		for (int i = 0; i < quant; i++) {
+			teamMaker(nombre(), division.getFederation(), division);
 		}
 	}
 	public String generateRandomString(int length) {

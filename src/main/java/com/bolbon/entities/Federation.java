@@ -1,26 +1,70 @@
 package com.bolbon.entities;
 
 import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import java.util.ArrayList;
 
+@Entity
 public class Federation {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int idFederation;
+	@Column(name = "name")
 	private String name;
+
+	@OneToMany(mappedBy = "federation")
 	private List<Division> divisions;
+
+	@OneToMany(mappedBy = "federation")
+	private List<Team> teams;
+
+	public Federation() {
+		super();
+	}
 
 	public Federation(String name) {
 		this.name = name;
 		this.divisions = new ArrayList<>();
-		// Agregar las 5 divisiones de ligas
-		for (int i = 1; i <= 5; i++) {
-			divisions.add(new Division("Liga " + i));
-		}
+		this.teams = new ArrayList<>();
 	}
-	
-	public List<Team> getAllTeams(){
-		List<Team> teams = new ArrayList<>();
-		for (int i=0;i<divisions.size();i++) {
-			teams.addAll(divisions.get(i).g
-		}
-		return 
+
+	public int getIdFederation() {
+		return idFederation;
 	}
+
+	public void setIdFederation(int idFederation) {
+		this.idFederation = idFederation;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<Division> getDivisions() {
+		return divisions;
+	}
+
+	public void setDivisions(List<Division> divisions) {
+		this.divisions = divisions;
+	}
+
+	public List<Team> getTeams() {
+		return teams;
+	}
+
+	public void setTeams(List<Team> teams) {
+		this.teams = teams;
+	}
+
 }

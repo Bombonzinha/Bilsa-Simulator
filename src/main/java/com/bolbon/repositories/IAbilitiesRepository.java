@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.bolbon.entities.Abilities;
 
 @Repository("abilitiesRepository")
-public interface IAbilitiesRepository extends JpaRepository<Abilities, Integer>{
+public interface IAbilitiesRepository extends JpaRepository<Abilities, Serializable>{
 	public Abilities findByIdAbilities(int idAbility);
 
 	@Query("SELECT a FROM Abilities a")
