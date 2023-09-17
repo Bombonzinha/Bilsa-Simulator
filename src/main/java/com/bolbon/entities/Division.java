@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +33,9 @@ public class Division {
 
 	@OneToMany(mappedBy = "division")
 	private List<Team> teams;
+	
+	@Transient
+	private Table table;
 
 	public Division() {
 		super();
@@ -76,14 +80,21 @@ public class Division {
 		this.teams = teams;
 	}
 
+	public Table getTable() {
+		return table;
+	}
+
+	public void setTable(Table table) {
+		this.table = table;
+	}
+
 	public void roundRobinSimulator() {
-		List<Team> ida = new ArrayList<>(teams);
-		Tools.ordenarAleatoriamente(ida); // Se sortea el orden
-		List<Team> vuelta = new ArrayList<>(ida);
-		Collections.reverse(vuelta);
-		List<List<MatchResult>> calendarFirstLeg = roundRobinGenerator(ida);
-		List<List<MatchResult>> calendarSecondLeg = roundRobinGenerator(vuelta);
+		Tools.ordenarAleatoriamente(teams); // Se sortea el orden
+		List<List<MatchResult>> calendarFirstLeg = roundRobinGenerator(teams);
+		Collections.reverse(teams);
+		List<List<MatchResult>> calendarSecondLeg = roundRobinGenerator(teams);
 		List<List<MatchResult>> calendar = new ArrayList<>();
+		//ESto esta mal no intercala local/visitante bien
 		int maxRounds = Math.max(calendarFirstLeg.size(), calendarSecondLeg.size());
 		for (int i = 0; i < maxRounds; i+=2) {
 		    if (i < calendarFirstLeg.size()) {
@@ -100,25 +111,11 @@ public class Division {
 		    if (i + 1 < calendarFirstLeg.size()) {
 		        calendar.add(calendarFirstLeg.get(i+1)); //agrego los pares 2da vuelta
 		    }
-		}
+		}// pero si funciona 
+		table = new Table(teams);
 		roundRobinLoader(calendar);
-		
 	}
 
-//	public void calendarGenerator(List<Team> teams) {
-//		List<List<MatchResult>> calendario = new ArrayList<>();
-//		// Generar las primeras 19 fechas
-//		int[][] array = new int[38][20];
-//		for (int fecha = 1; fecha <= 19; fecha++) {
-//			List<MatchResult> fechaActual = new ArrayList<>();
-//			
-//				for (int i =0; i < 10; i++) { //cantidad de partidos de la fecha
-//					MatchResult partido = new MatchResult(teams.get(i), teams.get(i));
-//					fechaActual.add(partido);
-//				}
-//			calendario.add(fechaActual);
-//		}
-//	}
 	public List<List<MatchResult>> roundRobinGenerator(List<Team> teams) {
 		List<List<MatchResult>> calendar = new ArrayList<>();
 		int numTeams = teams.size();
@@ -145,14 +142,19 @@ public class Division {
 
 	public void roundRobinLoader(List<List<MatchResult>> calendar) {
 		for (int i = 0; i < calendar.size(); i++) {	//Para cada fecha
-			System.out.println("Fecha "+(i+1));
+//			System.out.println("Fecha "+(i+1));
 			List<MatchResult> fecha = calendar.get(i);
 			for (int j = 0; j < fecha.size(); j++) { //Para cada partido de la fecha
+				int[] goles = new int[2];
 				MatchResult partido = fecha.get(j);
-				Match.simulationMatch(partido); //esto modifica el partido con los goles
-				System.out.println(partido);
+				goles = Match.simulationMatch(partido); //esto modifica el partido con los goles
+				table.updateTable(partido.getHome(), goles[0], goles[1], Match.puntosPartido(goles[0], goles[1]));
+				table.updateTable(partido.getAway(), goles[1], goles[0], Match.puntosPartido(goles[1], goles[0]));
+//				System.out.println(partido);
 			}
-			System.out.println();
+//			System.out.println();
+//			System.out.println(table);
+//			System.out.println();
 		}
 		
 	}

@@ -42,6 +42,7 @@ public class Tests {
 //		teamsGenerator(20, leagueOne);
 		Division division = divisionRepository.findByIdDivisionWithTeams(1);
 		division.roundRobinSimulator();
+		System.out.println(division.getTable());
 //		teamsGenerator(20, divisionRepository.findByIdDivision(1));
 //		teamsGenerator(20);
 //		String resultados = "";

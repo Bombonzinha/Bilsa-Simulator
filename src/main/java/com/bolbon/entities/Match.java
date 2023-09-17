@@ -98,4 +98,14 @@ public class Match {
 			suma += matrixGoles[i];
 		return suma;
 	}
+	
+	public static int puntosPartido(int favor, int contra) {
+		int puntos = 0;
+		if (favor < contra) {
+			puntos = 1;
+		} else if(favor>contra) {
+			puntos= 3;
+		}
+		return puntos;
+	}
 }
