@@ -5,10 +5,7 @@ import java.util.Random;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
 
 import com.bolbon.entities.*;
 import com.bolbon.repositories.IAbilitiesRepository;
@@ -17,14 +14,13 @@ import com.bolbon.repositories.IFederationRepository;
 import com.bolbon.repositories.IPlayerRepository;
 import com.bolbon.repositories.ITeamRepository;
 import com.bolbon.utils.AbilitiesGenerator;
-import com.bolbon.utils.PlayerLoad;
 import com.bolbon.utils.RandomWordPicker;
 
 import jakarta.persistence.EntityNotFoundException;
 
 @SpringBootTest
 //@Component
-public class AddPlayer {
+public class Tests {
 	@Autowired
 	private IPlayerRepository playerRepository;
 	@Autowired
@@ -39,11 +35,13 @@ public class AddPlayer {
 	private static Random random = new Random();
 	@Test
 	public void testAddPlayer() {
-		Federation federation = new Federation("Bilsa Football League");
-		Division leagueOne = new Division("League One", federation);
-		federationRepository.save(federation);
-		divisionRepository.save(leagueOne);
-		teamsGenerator(20, leagueOne);
+//		Federation federation = new Federation("Bilsa Football League");
+//		Division leagueOne = new Division("League One", federation);
+//		federationRepository.save(federation);
+//		divisionRepository.save(leagueOne);
+//		teamsGenerator(20, leagueOne);
+		Division division = divisionRepository.findByIdDivisionWithTeams(1);
+		division.roundRobinSimulator();
 //		teamsGenerator(20, divisionRepository.findByIdDivision(1));
 //		teamsGenerator(20);
 //		String resultados = "";

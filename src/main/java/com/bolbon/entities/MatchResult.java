@@ -42,6 +42,13 @@ public class MatchResult {
 		this.away = away;
 		this.goalsHome = goalsHome;
 		this.goalsAway = goalsAway;
+		calculateResult();
+	}
+	public MatchResult(Team home, Team away) {
+		this.home = home;
+		this.away = away;
+		this.goalsHome = -1;
+		this.goalsAway = -1;
 	}
 
 	public int getIdMatchResult() {
@@ -83,8 +90,12 @@ public class MatchResult {
 	public void setGoalsAway(int goalsAway) {
 		this.goalsAway = goalsAway;
 	}
-	
-	
+	//esto es para cuando el partido no se inicializó con goles
+	public void simulateMatch(int goalsHome, int goalsAway) {
+		this.goalsHome=goalsHome;
+		this.goalsAway=goalsAway;
+		calculateResult();
+	}
 
 	public void calculateResult() {
 		if (goalsHome > goalsAway) {

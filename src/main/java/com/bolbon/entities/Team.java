@@ -48,10 +48,10 @@ public class Team {
     @JoinColumn(name = "division_id")
     private Division division;
 	
-	@OneToMany(mappedBy = "home")
+	@OneToMany(mappedBy = "home", fetch = FetchType.EAGER)
 	private List<MatchResult> homeMatches;
 
-	@OneToMany(mappedBy = "away")
+	@OneToMany(mappedBy = "away", fetch = FetchType.EAGER)
 	private List<MatchResult> awayMatches;
 
 	@Column(name = "matches_played")
