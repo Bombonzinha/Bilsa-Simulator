@@ -108,4 +108,11 @@ public class Match {
 		}
 		return puntos;
 	}
+	//SEPARADOR ACA ARRANCA EL SIMULADOR COMPLEJO
+	public static void complexMatch(MatchResult partido) {
+		Team home = partido.getHome();
+		Team away = partido.getAway();
+		
+		
+	}
 }

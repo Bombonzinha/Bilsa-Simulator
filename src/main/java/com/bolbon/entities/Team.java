@@ -39,15 +39,15 @@ public class Team {
 	private Set<Player> players = new HashSet<>();
 	@Column(name = "rating")
 	private int rating;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "federation_id")
-    private Federation federation;
-	
+	@JoinColumn(name = "federation_id")
+	private Federation federation;
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "division_id")
-    private Division division;
-	
+	@JoinColumn(name = "division_id")
+	private Division division;
+
 	@OneToMany(mappedBy = "home", fetch = FetchType.EAGER)
 	private List<MatchResult> homeMatches;
 
@@ -71,7 +71,6 @@ public class Team {
 
 	@Column(name = "goals_against")
 	private int goalsAgainst;
-
 
 	public Team() {
 		super();
@@ -127,7 +126,7 @@ public class Team {
 		this.goalsFor = 0;
 		this.goalsAgainst = 0;
 	}
-	
+
 	public Team(String name) {
 		super();
 		this.name = name;
@@ -307,10 +306,89 @@ public class Team {
 		MatchResult matchResult = new MatchResult(this, opponent, goalsFor, goalsAgainst);
 		matchResult.calculateResult();
 	}
+	//funcion final para obtener el 11 titular y los 12 suplentes
+	public List<List<Player>> getMatchPlayers() {
+		List<Player> playerList = new ArrayList<>(players); //obtengo la lista de jugadores del equipo
+		ordenarPorRating(playerList);	//la ordeno por rating para obtener a los mejores jugadores
+		List<Player> titulares = obtainFirstEleven(playerList); //obtengo el once titular
+		playerList.removeAll(titulares); //filtro los titulares para buscar los suplentes
+		List<Player> substitutes = buscarJugadoresSuplentes(playerList); //obtengo los suplentes
+		List<List<Player>> result = new ArrayList<>();
+	    result.add(titulares);
+	    result.add(substitutes);
+		return result;
+	}
+	//funcion para obtener el once titular
+	private List<Player> obtainFirstEleven(List<Player> playerList) {
+		List<Player> firstEleven = new ArrayList<>();
+		firstEleven.add(buscarArquero(playerList));
+		firstEleven.addAll(buscarJugadoresTitulares(playerList, 1, 4));
+		firstEleven.addAll(buscarJugadoresTitulares(playerList, 2, 3));
+		firstEleven.addAll(buscarJugadoresTitulares(playerList, 3, 3));
+		return firstEleven;
+	}
+	//funcion para buscar al arquero
+	private Player buscarArquero(List<Player> playerList) {
+		List<Player> players = buscarJugadores(playerList, 0); // Busco a los arqueros (pos 0)
+		ordenarPorRating(players); // ordeno la LISTA DE ARQUEROS por rating
+		return players.get(0); // retorno el arquero con más rating
+	}
+	// esto busca al mejor/es jugador/es por posición para el equipo titular
+	private List<Player> buscarJugadoresTitulares(List<Player> playerList, int posicion, int cantidad) {
+		List<Player> playersPosition = buscarJugadores(playerList, posicion);
+		ordenarPorRating(playersPosition);
+		List<Player> players = new ArrayList<>();
+		for (int i = 0; i < cantidad; i++) {
+			players.add(playersPosition.get(i));
+		}
+		return players;
+	}
+	//funcion para obtener a los suplentes
+	private List<Player> buscarJugadoresSuplentes(List<Player> playerList) {
+		ordenarPorPosicion(playerList); //ordeno la lista de suplentes por posicion
+		List<Player> substitutes = new ArrayList<>(); //obtengo los suplentes de la posicion p
+		for (int p = 0; p< 4;p++) { //para cada posicion
+			List<Player> players = buscarJugadores(playerList, p); //obtengo los suplentes de la posicion p
+			if (p==0) { //2 arqueros
+				for (int i = 0; i < 2 && i<players.size(); i++) {
+					substitutes.add(players.get(i));
+				}
+			} else if(p==1) { //hasta 4 defensores
+				for (int i = 0; i < 4 && i<players.size(); i++) {
+					substitutes.add(players.get(i));
+				}
+			} else { //hasta 3 medios/delanteros
+				for (int i = 0; i < 3 && i<players.size(); i++) {
+					substitutes.add(players.get(i));
+				}
+			}
+		}
+		return substitutes;
+	}
+	// esto busca jugadores por posición
+	public List<Player> buscarJugadores(List<Player> playerList, int posicion) {
+		List<Player> players = new ArrayList<>();
+		for (int i = 0; i < playerList.size(); i++) {
+			Player aux = playerList.get(i);
+			if (aux.getPosition() == posicion) {
+				players.add(aux);
+			}
+		}
+		return players;
+	}
+
+	public void ordenarPorRating(List<Player> playerList) {
+		playerList.sort((player1, player2) -> Integer.compare(player2.getRating(), player1.getRating()));
+	}
+
+	public void ordenarPorPosicion(List<Player> playerList) {
+		playerList.sort((player1, player2) -> Integer.compare(player1.getPosition(), player2.getPosition()));
+	}
 
 	@Override
 	public String toString() {
-		return "Team [idTeam=" + idTeam + ", name=" + name + ", players=" + players + ", rating=" + rating + ", league=" +division.getName() +"]";
+		return "Team [idTeam=" + idTeam + ", name=" + name + ", players=" + players + ", rating=" + rating + ", league="
+				+ division.getName() + "]";
 	}
 
 }

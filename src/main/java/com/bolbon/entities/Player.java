@@ -34,7 +34,7 @@ public class Player {
 	@Column(name="age")
 	private int age;
 	@Column(name="position")
-	private int position; //1-11
+	private int position; //1-11 AHORA HAGO SOLO ARQUERO DEFENSOR MEDIOCAMPISTA Y DELANTERO
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="team")
 	private Team team;

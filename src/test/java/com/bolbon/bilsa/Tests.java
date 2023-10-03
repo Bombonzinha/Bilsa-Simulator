@@ -14,6 +14,7 @@ import com.bolbon.repositories.IFederationRepository;
 import com.bolbon.repositories.IPlayerRepository;
 import com.bolbon.repositories.ITeamRepository;
 import com.bolbon.utils.AbilitiesGenerator;
+import com.bolbon.utils.NumeroAleatorioPersonalizado;
 import com.bolbon.utils.RandomWordPicker;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -35,14 +36,14 @@ public class Tests {
 	private static Random random = new Random();
 	@Test
 	public void testAddPlayer() {
-//		Federation federation = new Federation("Bilsa Football League");
-//		Division leagueOne = new Division("League One", federation);
-//		federationRepository.save(federation);
-//		divisionRepository.save(leagueOne);
-//		teamsGenerator(20, leagueOne);
-		Division division = divisionRepository.findByIdDivisionWithTeams(1);
-		division.roundRobinSimulator();
-		System.out.println(division.getTable());
+		Federation federation = new Federation("Bilsa Football League");
+		Division leagueOne = new Division("League One", federation);
+		federationRepository.save(federation);
+		divisionRepository.save(leagueOne);
+		teamsGenerator(20, leagueOne);
+//		Division division = divisionRepository.findByIdDivisionWithTeams(1);
+//		division.roundRobinSimulator();
+//		System.out.println(division.getTable());
 //		teamsGenerator(20, divisionRepository.findByIdDivision(1));
 //		teamsGenerator(20);
 //		String resultados = "";
@@ -81,9 +82,11 @@ public class Tests {
 	public void teamMaker(String name) {
 		Team team = new Team(name);
 		//teamRepository.save(team);
-		
-		for (int i =0;i<26;i++) {
-			playerMaker80(nombre(), random.nextInt(16, 40), random.nextInt(11), team);
+		for (int i = 0;i<3;i++) {
+			playerMaker80(nombre(), NumeroAleatorioPersonalizado.generateNumber(28, 10, 15, 45), 0, team);
+		}
+		for (int i =0;i<23;i++) {
+			playerMaker80(nombre(), NumeroAleatorioPersonalizado.generateNumber(28, 10, 15, 45), random.nextInt(1, 4), team);
 		}
 		team.calcularRating();
 		teamRepository.save(team);
@@ -93,7 +96,7 @@ public class Tests {
 		//teamRepository.save(team);
 		
 		for (int i =0;i<26;i++) {
-			playerMaker80(nombre(), random.nextInt(16, 40), random.nextInt(11), team);
+			playerMaker80(nombre(), random.nextInt(16, 40), random.nextInt(4), team);
 		}
 		team.calcularRating();
 		teamRepository.save(team);

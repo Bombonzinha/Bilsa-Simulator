@@ -27,39 +27,38 @@ public class Abilities {
 	@Column(name = "attack")
 	private int attack;
 
-	@Column(name = "dribble")
-	private int dribble;
-
-	@Column(name = "technique")
-	private int technique;
-
-	@Column(name = "shot")
-	private int shot;
-
-	@Column(name = "shortPass")
-	private int shortPass;
-
-	@Column(name = "longPass")
-	private int longPass;
-
-	@Column(name = "speed")
-	private int speed;
-
-	@Column(name = "agility")
-	private int agility;
-
-	@Column(name = "jump")
-	private int jump;
-
-	@Column(name = "stamina")
-	private int stamina;
-
+	@Column(name = "defence")
+	private int defence;
+	
 	@Column(name = "strength")
 	private int strength;
 
-	@Column(name = "defence")
-	private int defence;
+	@Column(name = "stamina")
+	private int stamina;
+	
+	@Column(name = "speed")
+	private int speed;
+	
+	@Column(name = "agility")
+	private int agility;
+	
+	@Column(name = "dribble")
+	private int dribble;
 
+	@Column(name = "shortPass")
+	private int shortPass;
+	
+	@Column(name = "longPass")
+	private int longPass;
+
+	@Column(name = "shot")
+	private int shot;
+	
+	@Column(name = "jump")
+	private int jump;
+
+	@Column(name = "technique")
+	private int technique;
 
 	public Abilities() {
 		super();
@@ -263,23 +262,9 @@ public class Abilities {
 		break;
 		case 1: weights = new double[]{0.0, 0.30, 0.25, 0.05, 0.01, 0.05, 0.01, 0.02, 0.04, 0.01, 0.15, 0.01};
 		break;
-		case 2: weights = new double[]{0.08, 0.08, 0.05, 0.12, 0.16, 0.11, 0.11, 0.09, 0.08, 0.03, 0.03, 0.06};
+		case 2: weights = new double[]{0.06, 0.06, 0.07, 0.09, 0.06, 0.09, 0.12, 0.12, 0.12, 0.07, 0.02, 0.12};
 		break;
-		case 3: weights = new double[]{0.08, 0.08, 0.05, 0.12, 0.16, 0.11, 0.11, 0.09, 0.08, 0.03, 0.03, 0.06};
-		break;
-		case 4: weights = new double[]{0.04, 0.12, 0.08, 0.07, 0.03, 0.01, 0.13, 0.13, 0.13, 0.04, 0.09, 0.13};
-		break;
-		case 5: weights = new double[]{0.00, 0.20, 0.14, 0.12, 0.10, 0.02, 0.02, 0.04, 0.12, 0.02, 0.16, 0.06};
-		break;
-		case 6: weights = new double[]{0.11, 0.03, 0.05, 0.12, 0.14, 0.09, 0.09, 0.08, 0.09, 0.09, 0.03, 0.07};
-		break;
-		case 7: weights = new double[]{0.09, 0.06, 0.06, 0.11, 0.06, 0.08, 0.14, 0.15, 0.15, 0.09, 0.02, 0.15};
-		break;
-		case 8: weights = new double[]{0.13, 0.00, 0.12, 0.05, 0.08, 0.08, 0.09, 0.07, 0.03, 0.13, 0.12, 0.09};
-		break;
-		case 9: weights = new double[]{0.09, 0.02, 0.09, 0.06, 0.05, 0.09, 0.12, 0.12, 0.12, 0.11, 0.01, 0.12};
-		break;
-		case 10: weights = new double[]{0.11, 0.03, 0.05, 0.12, 0.14, 0.09, 0.09, 0.08, 0.09, 0.09, 0.03, 0.07};
+		case 3: weights = new double[]{0.1667, 0.0, 0.1333, 0.05, 0.1167, 0.1, 0.1167, 0.05, 0.0167, 0.1667, 0.1333, 0.1167};
 		break;
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + pos);
@@ -289,11 +274,10 @@ public class Abilities {
 
 	@Override
 	public String toString() {
-		return "Abilities [idAbilities=" + idAbilities + ", attack=" + attack + ", dribble=" + dribble + ", technique="
-				+ technique + ", shot=" + shot + ", shortPass=" + shortPass + ", longPass=" + longPass + ", speed="
-				+ speed + ", agility=" + agility + ", jump=" + jump + ", stamina=" + stamina + ", strength=" + strength
-				+ ", defence=" + defence + "]";
+		return "Abilities id " + idAbilities + " atk=" + attack + " def=" + defence + " str="
+				+ strength + " sta=" + stamina + " spd=" + speed + " agi=" + agility + " dri="
+				+ dribble + " shP=" + shortPass + " lgP=" + longPass + " sht=" + shot + " jum=" + jump
+				+ " tec=" + technique;
 	}
-
 
 }
